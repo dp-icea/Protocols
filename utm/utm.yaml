@@ -117,6 +117,16 @@ components:
         Clients must provide these access tokens in an `Authorization` header in
         the form `Bearer <token>` in accordance with RFC 6750.
   schemas:
+    FlightType:
+      description: >-
+        String for flight type. Accepted values are "VLOS", "EVLOS" or "BVLOS"
+      maxLength: 5
+      minLength: 4
+      type: string
+      enum:
+        - VLOS
+        - EVLOS
+        - BVLOS
     UUIDv4Format:
       description: >-
         String whose format matches a version-4 UUID according to RFC 4122.
@@ -633,6 +643,7 @@ components:
         USS instances.
       required:
       - id
+      - flight_type
       - manager
       - uss_availability
       - version
@@ -645,6 +656,8 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/EntityID'
+        flight_type:
+          $ref: '#/components/schemas/OperationalIntentFlightType'
         manager:
           type: string
           example: uss1
@@ -695,6 +708,10 @@ components:
             manager receives relevant airspace updates.
           anyOf:
           - $ref: '#/components/schemas/SubscriptionID'
+    OperationalIntentFlightType:
+      description: Flight Type
+      anyOf:
+        - $ref: '#/components/schemas/FlightType'
     OperationalIntentUssBaseURL:
       description: >-
         The base URL of a USS implementation that implements the parts of the
@@ -714,6 +731,7 @@ components:
       - extents
       - state
       - uss_base_url
+      - flight_type
       type: object
       properties:
         extents:
@@ -773,6 +791,8 @@ components:
             deleted automatically upon the deletion of this operational intent.
           anyOf:
           - $ref: '#/components/schemas/ImplicitSubscriptionParameters'
+        flight_type:
+          $ref: '#/components/schemas/OperationalIntentFlightType'
     ImplicitSubscriptionParameters:
       description: >-
         Information necessary to create a subscription to serve a single
