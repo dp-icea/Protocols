@@ -23,6 +23,7 @@ security:
   - utm.constraint_processing
   - utm.conformance_monitoring_sa
   - utm.availability_arbitration
+  - utm.aviation_authority
 tags:
 - name: Operational intent references
   description: >-
@@ -76,6 +77,8 @@ components:
               monitoring for situational awareness role.
             utm.availability_arbitration: >-
               Client may set the availability state of USSs in the DSS.
+            utm.aviation_authority: >-
+              Client is an aviation authority.
       description: >-
         Authorization from, or on behalf of, an authorization authority.  This
         authority will issue access tokens that are JSON Web Tokens as defined
@@ -1224,6 +1227,62 @@ components:
       properties:
         constraint:
           $ref: '#/components/schemas/Constraint'
+    GetOperationalIntentAuthorizationResponse:
+      description: >-
+        Teste
+      type: object
+      properties:
+        issued_by: 
+          type: string
+          example: providerX
+          description: "Name of the USS which issued this authorization"
+        issued_to: 
+          type: object
+          description: "Identification of the company that requested this authorization"
+          properties: 
+            cnpj: 
+              type: string
+              example: "00394429010840"
+            razao_social: 
+              type: string
+              example: "COMANDO DA AERONAUTICA"
+            nome_fantasia: 
+              type: string
+              example: "INSTITUTO DE CONTROLE DO ESPACO AEREO - ICEA"
+        operation_profile: 
+          type: string
+          enum:
+            - "Padrão"
+            - "Especial - Órgãos de Governo"
+            - "Especial - Outros"
+            - "Aerolevantamento"
+            - "Entorno de Estrutura"
+            - "Aeroagrícola"
+            - "Atípico"
+        operators: 
+          type: array
+          description: "List of operators that will fly this aircraft"
+          items: 
+            type: string
+            description: "SARPAS code of the operator"
+          example: ["HUKMBB"]
+        aircraft: 
+          type: string
+          example: "PP-000000000"
+          description: "SISANT code of the aircraft"
+        contigency_strategy: 
+          type: string
+          enum:
+            - "Return to Home (RTH)"
+            - "Parachute"
+        timestamp: 
+          type: number
+          description: "Epoch Timestamp when this authorization was issued"
+          example: 1
+        observations:
+          type: string
+          description: "Optional open text field to describe the operation"
+          example: ""
     GetOperationalIntentTelemetryResponse:
       description: >-
         Response to a peer request for telemetry of an off-nominal operational
@@ -3613,6 +3672,69 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: No telemetry data is available.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: >-
+            The client issued too many requests in a short period of time.
+  /uss/v1/operational_intents/{entityid}/authorization:
+    summary: >-
+      Detailed information of the flight authorization linked with this operational intent.
+    parameters:
+    - name: entityid
+      description: EntityID for this operational intent.
+      schema:
+        $ref: '#/components/schemas/EntityID'
+      in: path
+      required: true
+    get:
+      tags:
+      - Operational intent details
+      - p2p_utm
+      security:
+      - Authority:
+        - utm.aviation_authority
+      summary: >-
+        Query information of the flight authorization linked with this operational intent.
+      operationId: getOperationalIntentAuthorization
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOperationalIntentAuthorizationResponse'
+          description: >-
+            OperationalIntent Authorization details were retrieved successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: One or more input parameters were missing or invalid.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: >-
+            Bearer access token was not provided in Authorization header, token
+            could not be decoded, or token was invalid.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: >-
+            The access token was decoded successfully but did not include a
+            scope appropriate to this endpoint.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: The requested Entity could not be found.
         '429':
           content:
             application/json:
