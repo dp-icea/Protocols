@@ -138,7 +138,7 @@ components:
       type: string
       format: uuid
       pattern: >-
-        ^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-4[0-9a-fA-F]{3}\\-[8-b][0-9a-fA-F]{3}\\-[0-9a-fA-F]{12}$
+        ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-4[0-9a-fA-F]{3}\-[89abAB][0-9a-fA-F]{3}\-[0-9a-fA-F]{12}$
       example: 03e5572a-f733-49af-bc14-8a18bd53ee39
     EntityID:
       description: >-
@@ -161,6 +161,16 @@ components:
       minLength: 16
       maxLength: 128
       example: 9d158f59-80b7-4c11-9c0c-8a2b4d936b2d
+    EntityVersion:
+      title: EntityVersion
+      description: >-
+        Numeric version of this entity which increments upon each change in the
+        entity, regardless of whether any field of the entity changes.  A USS
+        with the details of this entity when it was at a particular version does
+        not need to retrieve the details again until the version changes.
+      type: integer
+      format: int32
+      example: 1
     SubscriptionID:
       description: >-
         Identifier for a subscription communicated through the DSS.  Formatted
@@ -673,16 +683,7 @@ components:
         uss_availability:
           $ref: '#/components/schemas/UssAvailabilityState'
         version:
-          type: integer
-          format: int32
-          example: 1
-          description: >-
-            Numeric version of this operational intent which increments upon
-            each change in the operational intent, regardless of whether any
-            field of the operational intent reference changes.  A USS with the
-            details of this operational intent when it was at a particular
-            version does not need to retrieve the details again until the
-            version changes.
+          $ref: '#/components/schemas/EntityVersion'
         state:
           $ref: '#/components/schemas/OperationalIntentState'
         ovn:
@@ -906,15 +907,7 @@ components:
         uss_availability:
           $ref: '#/components/schemas/UssAvailabilityState'
         version:
-          type: integer
-          format: int32
-          example: 1
-          description: >-
-            Numeric version of this constraint which increments upon each change
-            in the constraint, regardless of whether any field of the constraint
-            reference changes.  A USS with the details of this constraint when
-            it was at a particular version does not need to retrieve the details
-            again until the version changes.
+          $ref: '#/components/schemas/EntityVersion'
         ovn:
           description: >-
             Opaque version number of this constraint.  Populated only when the
@@ -1724,7 +1717,7 @@ components:
           - CSTP0020
           - CSTP0025
           - CSTP0030
-          - CSTO0035
+          - CSTP0035
     UserInputRecord:
       type: object
       description: User input record
