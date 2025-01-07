@@ -138,7 +138,7 @@ components:
       type: string
       format: uuid
       pattern: >-
-        ^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-4[0-9a-fA-F]{3}\\-[8-b][0-9a-fA-F]{3}\\-[0-9a-fA-F]{12}$
+        ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-4[0-9a-fA-F]{3}\-[89abAB][0-9a-fA-F]{3}\-[0-9a-fA-F]{12}$
       example: 03e5572a-f733-49af-bc14-8a18bd53ee39
     EntityID:
       description: >-
@@ -1724,7 +1724,7 @@ components:
           - CSTP0020
           - CSTP0025
           - CSTP0030
-          - CSTO0035
+          - CSTP0035
     UserInputRecord:
       type: object
       description: User input record
