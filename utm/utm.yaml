@@ -656,7 +656,6 @@ components:
         USS instances.
       required:
       - id
-      - flight_type
       - manager
       - uss_availability
       - version
@@ -669,8 +668,6 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/EntityID'
-        flight_type:
-          $ref: '#/components/schemas/OperationalIntentFlightType'
         manager:
           type: string
           example: uss1
@@ -713,7 +710,6 @@ components:
           anyOf:
           - $ref: '#/components/schemas/SubscriptionID'
     OperationalIntentFlightType:
-      description: Flight Type
       anyOf:
         - $ref: '#/components/schemas/FlightType'
     OperationalIntentUssBaseURL:
@@ -1082,6 +1078,8 @@ components:
           default: [ ]
         priority:
           $ref: '#/components/schemas/Priority'
+        flight_type:
+          $ref: '#/components/schemas/OperationalIntentFlightType'
     Priority:
       description: >-
         Ordinal priority of the operational intent, as defined by the
