@@ -709,9 +709,6 @@ components:
             manager receives relevant airspace updates.
           anyOf:
           - $ref: '#/components/schemas/SubscriptionID'
-    OperationalIntentFlightType:
-      anyOf:
-        - $ref: '#/components/schemas/FlightType'
     OperationalIntentUssBaseURL:
       description: >-
         The base URL of a USS implementation that implements the parts of the
@@ -791,8 +788,6 @@ components:
             deleted automatically upon the deletion of this operational intent.
           anyOf:
           - $ref: '#/components/schemas/ImplicitSubscriptionParameters'
-        flight_type:
-          $ref: '#/components/schemas/OperationalIntentFlightType'
     ImplicitSubscriptionParameters:
       description: >-
         Information necessary to create a subscription to serve a single
@@ -1092,6 +1087,15 @@ components:
         operational intents of the same priority.
       type: integer
       default: 0
+    OperationalIntentFlightType:
+      description: >-
+        Flight type of the operational intent, as declared by the operator.
+        As defined by the regulator, Operational intents with visual flight 
+        types (VLOS and EVLOS) may create conflict with another visual flight 
+        (VLOS and EVLOS). Operational intents with non-visual flight types 
+        (BVLOS) may not create conflift with any other operational intent.
+      anyOf:
+        - $ref: '#/components/schemas/FlightType'
     OperationalIntent:
       description: Full description of a UTM operational intent.
       required:
