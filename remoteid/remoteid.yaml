@@ -1642,7 +1642,7 @@ components:
           example: ABCDEF
         operator_location:
           anyOf:
-            - $ref: 'commons.yaml#/components/schemas/LatLngPoint'
+            - $ref: '#/components/schemas/LatLngPoint'
           description: Location of party controlling the aircraft.
         operation_description:
           description: Free-text field that enables the operator to describe the purpose
