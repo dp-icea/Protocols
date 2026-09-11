@@ -1641,7 +1641,9 @@ components:
           default: ''
           example: ABCDEF
         operator_location:
-          $ref: '#/components/schemas/OperatorLocation'
+          anyOf:
+            - $ref: 'commons.yaml#/components/schemas/LatLngPoint'
+          description: Location of party controlling the aircraft.
         operation_description:
           description: Free-text field that enables the operator to describe the purpose
             of a flight, if so desired.
